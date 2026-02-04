@@ -10,6 +10,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "consumer"
+version = "0.1.0"
+dependencies = [
+ "ipc_shared",
+]
+
+[[package]]
+name = "ipc_shared"
+version = "0.1.0"
+
+[[package]]
 name = "libc"
 version = "0.2.180"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -22,4 +33,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "744133e4a0e0a658e1374cf3bf8e415c4052a15a111acd372764c55b4177d490"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "producer"
+version = "0.1.0"
+dependencies = [
+ "ipc_shared",
 ]
