@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 ipc_shared = {path= "../ipc_shared"}
+shaq = "1.0.2"

@@ -14,6 +14,7 @@ name = "consumer"
 version = "0.1.0"
 dependencies = [
  "ipc_shared",
+ "shaq",
 ]
 
 [[package]]
@@ -40,4 +41,14 @@ name = "producer"
 version = "0.1.0"
 dependencies = [
  "ipc_shared",
+ "shaq",
+]
+
+[[package]]
+name = "shaq"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e7ff8d8358f614b394c8011e4aca6eb9c0bba29bd73d16be593745bd47838cb8"
+dependencies = [
+ "libc",
 ]
