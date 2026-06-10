@@ -6,9 +6,9 @@ pub const MAX_ACCOUNTS: usize = 16;
 pub const MAX_DATA: usize = 256;
 pub const MAX_TX_ACCOUNTS: usize = 16;
 
-pub const ALLOC_OFFSET: u64 = 0;
+pub const ALLOC_PATH: &str = "/tmp/ipc_alloc";
 pub const ALLOC_SIZE: u64 = 512 * 1024;
-pub const QUEUE_OFFSET: u64 = ALLOC_SIZE;
+pub const QUEUE_PATH: &str = "/tmp/ipc_queue";
 pub const QUEUE_SIZE: u64 = 512 * 1024;
 
 #[repr(C)]

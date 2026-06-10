@@ -6,22 +6,29 @@ use std::{fs::File, ptr::NonNull};
 fn main() {
     println!("Producer");
 
-    let path = "/tmp/ipc_test";
-
-    let file = File::options()
+    let alloc_file = File::options()
         .create(true)
         .read(true)
         .write(true)
-        .open(path)
+        .open(ALLOC_PATH)
         .unwrap();
 
-    let alloc = unsafe { Allocator::create(&file, 1024 * 1024, 2, 64 * 1024).unwrap() };
+    let alloc =
+        unsafe { Allocator::create(&alloc_file, ALLOC_SIZE as usize, 2, 64 * 1024).unwrap() };
 
-    file.sync_all().unwrap();
+    alloc_file.sync_all().unwrap();
 
-    let mut producer: Producer<Message> = unsafe { Producer::create(&file, 1024 * 1024) }.unwrap();
+    let queue_file = File::options()
+        .create(true)
+        .read(true)
+        .write(true)
+        .open(QUEUE_PATH)
+        .unwrap();
 
-    file.sync_all().unwrap();
+    let mut producer: Producer<Message> =
+        unsafe { Producer::create(&queue_file, QUEUE_SIZE as usize) }.unwrap();
+
+    queue_file.sync_all().unwrap();
 
     producer.sync();
 
@@ -82,7 +89,7 @@ fn main() {
 
     producer.commit();
 
-    println!("Transaction sent, waiting for result...");
+    println!("Transaction sent, wait for result");
 
     loop {
         let ready = unsafe { (*result_ptr).ready };

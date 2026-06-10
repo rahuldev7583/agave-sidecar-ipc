@@ -1,31 +1,27 @@
 use std::{fs::File, thread, time::Duration};
 
-use ipc_shared::{Message, ResultSlot};
+use ipc_shared::{ALLOC_PATH, Message, QUEUE_PATH, ResultSlot};
 use rts_alloc::{Allocator, error::Error};
 use shaq::spsc::Consumer;
 
 fn main() {
     println!("Consumer");
 
-    let path = "/tmp/ipc_test";
-    let file = loop {
-        match File::options().write(true).read(true).open(path) {
+    let alloc_file = loop {
+        match File::options().write(true).read(true).open(ALLOC_PATH) {
             Ok(f) => break f,
             Err(_) => thread::sleep(Duration::from_millis(10)),
         }
     };
 
-    println!("file got");
+    println!("alloc file got");
 
-    // Wait for the allocator magic to be valid
     let alloc = loop {
-        match unsafe { Allocator::join(&file) } {
+        match unsafe { Allocator::join(&alloc_file) } {
             Ok(a) => break a,
             Err(e) => {
                 match e {
-                    Error::InvalidMagic => {
-                        // expected during init
-                    }
+                    Error::InvalidMagic => {}
                     _ => panic!("real error: {:?}", e),
                 }
                 eprintln!("alloc join failed: {:?}, retrying...", e);
@@ -36,9 +32,17 @@ fn main() {
 
     println!("alloc got");
 
-    // Wait for the queue magic to be valid
+    let queue_file = loop {
+        match File::options().write(true).read(true).open(QUEUE_PATH) {
+            Ok(f) => break f,
+            Err(_) => thread::sleep(Duration::from_millis(10)),
+        }
+    };
+
+    println!("queue file got");
+
     let mut consumer: Consumer<Message> = loop {
-        match unsafe { Consumer::join(&file) } {
+        match unsafe { Consumer::join(&queue_file) } {
             Ok(c) => break c,
             Err(_) => thread::sleep(Duration::from_millis(10)),
         }
