@@ -5,4 +5,6 @@ edition = "2024"
 
 [dependencies]
 ipc_shared = {path= "../ipc_shared"}
-shaq = "1.0.2"
+memmap2 = "0.9"
+rts-alloc = "4.0.0"
+shaq = "3.0.0"
