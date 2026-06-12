@@ -10,6 +10,7 @@ fn main() {
         .create(true)
         .read(true)
         .write(true)
+        .truncate(true)
         .open(ALLOC_PATH)
         .unwrap();
 
